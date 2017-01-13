@@ -139,7 +139,9 @@ timesTable = [(x,y,x*y) | x <- [1..12], y <- [1..12]]
 sortList :: [a] -> [a]
 sortList [] = []
 sortList [x] = [x]
-sortList (x:y:xs) = [y]
+sortList (x:xs) = foldl (\newList item -> item : newList) [] ns
+
+-- foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
 
 
 --------------------------------------------------
