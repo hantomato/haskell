@@ -64,14 +64,25 @@ myAllEven2' (x1:xs1) (x2:xs2) =
 -- 리스트를 입력받아 순서를 아이템 순서가 거꾸로된 리스트를 반환한다.
 myRevert :: [a] -> [a]
 myRevert [] = []
-myRevert (x:xs) = myRevert' [] (x:xs)
+myRevert i@(x:xs) = myRevert' [] i
 
 -- 두 개의 리스트를 입력받아서 뒤에 리스트 요소를 앞의 리스트에 담되 순서를 거꾸로 담는다.
 myRevert' :: [a] -> [a] -> [a]
 myRevert' [] [] = []
-myRevert' (x:xs) [] = x : xs
+myRevert' i@(x:xs) [] = i
 myRevert' [] (x:xs) = myRevert' [x] xs
-myRevert' (x1:xs1) (x2:xs2) = myRevert' (x2 : (x1:xs1)) xs2
+myRevert' i@(x1:xs1) (x2:xs2) = myRevert' (x2 : i) xs2
+
+-- myRevert를 where 사용하는 방법으로 변경
+myRevert1 :: [a] -> [a]
+myRevert1 [] = []
+myRevert1 i@(x:xs) = myRevert1' [] i
+  where
+    myRevert1' :: [a] -> [a] -> [a]
+    myRevert1' [] [] = []
+    myRevert1' i@(x:xs) [] = i
+    myRevert1' [] (x:xs) = myRevert' [x] xs
+    myRevert1' i@(x1:xs1) (x2:xs2) = myRevert1' (x2 : i) xs2
 
 myRevert2 :: [a] -> [a]
 myRevert2 [] = []
@@ -83,6 +94,7 @@ myRevert2 (x:xs) = myRevert2 xs ++ [x]
 -- [("black","white"),("black","blue"),("black","yellow") ...
 extractColorTuples :: [([Char],[Char])]
 extractColorTuples = extractTuples ["black", "white", "blue", "yellow", "red"]
+--extractColorTuples = extractTuples ["a", "b", "c"]
 
 -- *Main> extractTuples [1,2,3,4]
 -- [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)]
@@ -98,6 +110,28 @@ makeTuples :: a -> [a] -> [(a,a)]
 makeTuples y [] = []
 makeTuples y [x] = [(y,x)]
 makeTuples y (x:xs) = (y,x) : makeTuples y xs
+
+-- 일단 아래는 오답임.
+extractColorTuples2 :: [([Char],[Char])]
+extractColorTuples2 = extractTuples2 ["black", "white", "blue", "yellow", "red"]
+--extractColorTuples2 = extractTuples2 ["a", "b", "c"]
+
+extractTuples2 :: [[Char]] -> [([Char],[Char])]
+extractTuples2 [] = []
+extractTuples2 [a] = []
+extractTuples2 i@(_:_) = [(x,y) | x <- i, y <- i, x /= y]
+-- != 는 없네??
+{-
+extractColorTuples 을 리스트 표현식 사용하여 구현하기.
+일단 기존의 extractColorTuples 은 
+입력이 [a,b,c] 이면 출력이 [(a,b), (a,c), (b,c)] 임.
+
+[(x,y) | x <- o, y <- o, x /= y] 를 이용할경우
+[(a,b), (a,c), (b,a), (b,c), (c,a), (c,b)] 임.
+안되겠는데??
+-}
+
+
 --------------------------------------------------
 
 -- 연습문제 4. 1~12 숫자를 사용한 구구단.

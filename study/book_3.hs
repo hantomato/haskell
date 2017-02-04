@@ -119,7 +119,6 @@ strLen str =
     [] -> "length 0"
     x -> "length 1"
 
-
 caseOfFirstLetter2 :: String -> String
 caseOfFirstLetter2 str =
   case str of
@@ -127,4 +126,87 @@ caseOfFirstLetter2 str =
     (x:xs) | 'a' <= x && x <= 'z' -> "lower"
            | 'A' <= x && x <= 'Z' -> "upper"
            | otherwise            -> "other"
+
+-- where 활용
+caseOfFirstLetter3 :: String -> String
+caseOfFirstLetter3 "" = "empty"
+caseOfFirstLetter3 (x:xs)
+  | inRange 'a' 'z' = "lower"
+  | inRange 'A' 'Z' = "upper"
+  | otherwise = "other"
+  where
+    inRange lower upper = lower <= x && x <= upper
+    
+-- where 활용 연습    
+tailLength :: [Int] -> Int
+tailLength [] = 0
+tailLength (_:xs) = myLength xs
+  where
+    myLength :: [Int] -> Int -- where에 선언 넣을수 있군.
+    myLength input = length input
+
+tailLength2 :: [Int] -> Int
+tailLength2 [] = 0
+tailLength2 (_:xs) = myLength
+  where -- 위에서 선언된 xs 사용
+    myLength = length xs
+
+tailLength3 :: [Int] -> Int
+tailLength3 [] = 0
+tailLength3 (_:xs) = myLength xs
+  where -- 패턴매치 사용
+    myLength [] = 0
+    myLength [a] = 1
+    myLength (a:as) = 1 + myLength as
+
+-- 여러개의 where 사용. where 의 scope 테스트.
+tailLength4 :: [Int] -> Int
+tailLength4 [] = 0
+tailLength4 [a] = myLength a
+  where
+    myLength i = 1
+
+tailLength4 (_:xs) = myLength xs
+  where -- 패턴매치 사용
+    myLength [] = 0
+    myLength (a:as) = 1 + myLength as
+
+-- take 구현
+take1 :: Int -> [a] -> [a]
+take1 n _ | n <= 0  = []
+take1 n []          = []
+take1 n (x:xs)      = x : take1 (n - 1) xs
+
+-- drop 구현
+drop1 :: Int -> [a] -> [a]
+drop1 n xs | n <= 0   = xs
+drop1 n []            = []
+drop1 n (x:xs)        = drop1 (n - 1) xs
+
+-- 원소를 정렬된 리스트에 순서에 맞게 끼워넣기. 
+ins :: Ord a => a -> [a] -> [a]
+ins n []        = [n]
+ins n i@(x:xs) 
+  | n < x       = n : i
+  | otherwise   = x : ins n xs
+
+-- 리스트 정렬하기
+insSort :: Ord a => [a] -> [a]
+insSort []      = []
+insSort (x:xs)  = ins x (insSort xs) -- 이런 응용에 약함.
+
+------------------------------
+-- 고차함수는 이미 했으니 스킵
+-- *Book3Module> scanl (\x y -> x+y) 10 [1,2,3,4]
+-- [10,11,13,16,20]
+
+
+
+
+
+
+
+
+
+
 
