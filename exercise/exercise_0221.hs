@@ -45,7 +45,7 @@
 
 -- !!! 위 문제가 어렵다면, 대신 아래 문제를 풀면 됩니다.
 
--- topcoder 665 문제.
+-- topcoder 665 문제. LuckyXor
 -- https://community.topcoder.com/stat?c=problem_statement&pm=13960
 {-
 	
