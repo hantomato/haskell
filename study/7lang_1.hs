@@ -1,3 +1,5 @@
+module Lang_1 where
+
 {-
 7랭귀지 교재. haskell (1일차)
 -}
